@@ -1,0 +1,26 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: authpolicy
+  namespace: default
+spec:
+  action: ALLOW
+  selecter:
+    matchLabels:
+      app: httpapicaller
+  rules:
+  - from:
+    #- source:
+        #principals: ["cluster.local/ns/default/sa/sleep"]
+    - source:
+        namespaces: ["envoy-gateway-system"]
+    to:
+    - operation:
+        methods: ["GET"]
+        paths: ["/getWeatherForecast"]
+    #- operation:
+        #methods: ["POST"]
+        #paths: ["/data"]
+    #when:
+    #- key: request.auth.claims[iss]
+      #values: ["https://accounts.google.com"]

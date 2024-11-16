@@ -1,0 +1,49 @@
+root@microk8prd:/home/stjit# kubectl get nodes
+NAME         STATUS   ROLES                  AGE     VERSION
+microk8prd   Ready    control-plane,master   6h34m   v1.29.6+k3s2
+
+
+
+
+root@microk8prd:/home/stjit/istio-1.22.3# export PATH=$PWD/bin:$PATH
+root@microk8prd:/home/stjit/istio-1.22.3# istioctl version
+client version: 1.22.3
+control plane version: 1.22.3
+data plane version: 1.22.3 (7 proxies)
+
+
+
+
+root@microk8prd:/home/stjit/istio-1.22.3# kubectl describe svc envoy-gateway -n envoy-gateway-system
+Name:              envoy-gateway
+Namespace:         envoy-gateway-system
+Labels:            app.kubernetes.io/instance=eg
+                   app.kubernetes.io/managed-by=Helm
+                   app.kubernetes.io/name=gateway-helm
+                   app.kubernetes.io/version=v1.0.2
+                   control-plane=envoy-gateway
+                   helm.sh/chart=gateway-helm-v1.0.2
+Annotations:       meta.helm.sh/release-name: eg
+                   meta.helm.sh/release-namespace: envoy-gateway-system
+Selector:          app.kubernetes.io/instance=eg,app.kubernetes.io/name=gateway-helm,control-plane=envoy-gateway
+Type:              ClusterIP
+IP Family Policy:  SingleStack
+IP Families:       IPv4
+IP:                10.43.124.34
+IPs:               10.43.124.34
+Port:              grpc  18000/TCP
+TargetPort:        18000/TCP
+Endpoints:         10.42.0.26:18000
+Port:              ratelimit  18001/TCP
+TargetPort:        18001/TCP
+Endpoints:         10.42.0.26:18001
+Session Affinity:  None
+Events:            <none>
+
+
+
+
+
+
+root@microk8prd:/home/stjit/istio-1.22.3# helm version
+version.BuildInfo{Version:"v3.11.2", GitCommit:"912ebc1cd10d38d340f048efaf0abda047c3468e", GitTreeState:"clean", GoVersion:"go1.18.10"}

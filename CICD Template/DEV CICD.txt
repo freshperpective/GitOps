@@ -1,0 +1,77 @@
+CI/CD Pipeline Overview
+
+    Source Code Management
+        Bitbucket: This is where your source code is stored and versioned. Developers commit their changes to the Bitbucket repository.
+
+    Build and Code Quality
+        SonarQube: Integrated into the CI pipeline to perform static code analysis. It checks for code quality issues, vulnerabilities, and code smells.
+        Unittesting: Automated unit tests run to validate the functionality of code changes. This ensures that new code does not break existing functionality.
+
+    Artifact Management
+        Harbor: A container registry where Docker images are stored. It is used to manage and distribute container images.
+        Artifactory: An artifact repository for storing build artifacts, such as libraries, binaries, and other dependencies.
+
+    Containerization
+        Docker: Used to build container images from your application code. Docker ensures that your application runs consistently across different environments.
+
+    Security
+        Image Scanning: Scans Docker images for vulnerabilities. This step ensures that images do not contain known security issues before they are deployed.
+        Image Signing: Signs Docker images to ensure their integrity and authenticity. This helps to verify that the images have not been tampered with.
+        Image Tagging: Tags Docker images with version numbers or other identifiers to manage different versions of the images effectively.
+
+    Deployment
+        ArgoCD: Handles the deployment of your application. ArgoCD is a declarative, GitOps continuous delivery tool for Kubernetes. It ensures that the desired state of your application is maintained in the Kubernetes cluster.
+
+    Notifications
+        Notify Mail: Sends notifications via email to inform the development team about the status of builds, tests, deployments, and other CI/CD events.
+
+Detailed CI/CD Pipeline Workflow
+
+    Code Commit
+        Developers push code changes to the Bitbucket repository.
+
+    CI Pipeline Trigger
+        A push to Bitbucket triggers the CI pipeline.
+
+    Code Quality Analysis
+        SonarQube performs static code analysis to check for code quality issues.
+
+    Unit Testing
+        Automated unit tests are executed to ensure code changes do not introduce regressions.
+
+    Build Docker Image
+        Docker builds a new container image from the source code and related files.
+
+    Image Scanning
+        The newly built Docker image is scanned for vulnerabilities using Image Scanning tools.
+
+    Image Signing
+        The Docker image is signed to ensure its authenticity.
+
+    Image Tagging
+        The Docker image is tagged with a version number or identifier.
+
+    Push to Harbor
+        The tagged Docker image is pushed to Harbor for storage and distribution.
+
+    Artifact Management
+        Build artifacts are stored in Artifactory.
+
+    Deployment Preparation
+        ArgoCD is configured to deploy the Docker image from Harbor to the development environment.
+
+    Deployment Execution
+        ArgoCD deploys the application to the development Kubernetes cluster, ensuring that the desired state is reflected.
+
+    Notification
+        Notify Mail sends an email with details about the build, test results, and deployment status.
+
+Additional Considerations
+
+    Branching Strategy: Implement a branching strategy in Bitbucket (e.g., feature branches, develop branch, main branch) to manage different stages of development and integration.
+
+    Automated Rollbacks: Configure ArgoCD or other tools to automatically rollback deployments in case of failures.
+
+    Monitoring and Logging: Set up monitoring and logging to track the health and performance of your application in the development environment.
+
+    Configuration Management: Manage configuration changes separately from code changes, possibly using tools like ConfigMaps and Secrets in Kubernetes.

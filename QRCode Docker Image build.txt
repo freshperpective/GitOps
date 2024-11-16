@@ -1,0 +1,63 @@
+#Ubuntu Version for the Build Machine
+
+
+stjit@stjit-dcd:~$ lsb_release -a
+No LSB modules are available.
+Distributor ID: Ubuntu
+Description:    Ubuntu 22.04.4 LTS
+Release:        22.04
+Codename:       jammy
+
+
+
+stjit@stjit-dcd:~$ docker --version
+Docker version 27.0.3, build 7d4bcd8
+
+
+For Building the Images
+
+docker build -t qrcodedatapreparationapiimg:v1 -f QrcodedatapreparationApi/Dockerfile  .
+
+
+For Creating Containers
+
+
+(XX) docker run --name qrcodedatapreparationapi qrcodedatapreparationapiimg:v1 -p 5052:8080 -p 7052:8081 -e ASPNETCORE_ENVIRONMENT=Development -e ASPNETCORE_HTTPS_PORTS=8081 -e ASPNETCOREHTTP_PORTS=8080
+
+
+docker run --name qrcodedatapreparationapi qrcodedatapreparationapiimg:v1 -p 5052:8080 -p 7052:8081 -e ASPNETCORE_ENVIRONMENT=Development
+
+
+
+
+Docker image with the name of dhttps and tag v1 will be created for our ASP.NET Core app.
+
+Next command is to run a docker container with the image we just built. This command is given below:
+
+docker run -p 7000:8080 -p 7001:8081 -e ASPNETCORE_URLS="https://+:8081;http://+:8080" -e ASPNETCORE_HTTPS_PORT=7001 -e ASPNETCORE_Kestrel__Certificates__Default__Password="mypass123" -e ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx -v %USERPROFILE%\.aspnet\https:/https/ dhttps:v1
+See the below image which shows I am running this command.
+
+
+docker run --name qrcodedatapreparationapi qrcodedatapreparationapiimg:v1 -p 5052:8080 -e ASPNETCORE_ENVIRONMENT="Development" -e ASPNETCORE_HTTP_PORT=8080
+
+
+
+docker build -t qrcodedatapreparationapi:v1 -f QrcodedatapreparationApi/Dockerfile .
+
+docker build -t qrcodeconfigurationapi:v1 -f QrcodeconfigurationApi/Dockerfile .
+
+docker build -t qrcodedeliveryapi:v1 -f QrcodedeliveryApi/Dockerfile .
+
+docker build -t qrcodeencodeapi:v1 -f QrcodeEncodeApi/Dockerfile .
+
+docker build -t qrcodeimagegenerationapi:v1 -f QrcodeimagegenerationApi/Dockerfile .
+
+
+docker tag SOURCE_IMAGE[:TAG] harbor.stj.savior.in:9443/qrcodeapi/REPOSITORY[:TAG]
+
+docker push harbor.stj.savior.in:9443/qrcodeapi/REPOSITORY[:TAG]
+
+
+
+
+

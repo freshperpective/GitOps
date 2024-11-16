@@ -1,0 +1,11 @@
+#First apply the configmaps
+
+kubectl apply -f qrcode-configmap.yaml
+
+#Second apply the Secrets
+
+kubectl apply -f qrcode-secret.yaml
+
+#third apply the deployment manifests
+
+kubectl apply -f qrcodedatapreparationapi.yaml

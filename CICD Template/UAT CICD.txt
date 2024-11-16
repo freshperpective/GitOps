@@ -1,0 +1,124 @@
+CD Pipeline Overview for UAT
+
+    Artifact Management
+        Harbor: Container registry for storing Docker images.
+        Artifactory: Repository for storing additional build artifacts and dependencies.
+
+    Deployment
+        K3S: Lightweight Kubernetes distribution for the UAT environment.
+        Helm: Package manager for Kubernetes that simplifies the deployment process.
+        ArgoCD: GitOps tool for managing Kubernetes deployments.
+
+    Service Mesh
+        Istio: Service mesh for managing microservices, traffic routing, and security.
+        Envoy: Proxy used by Istio for service-to-service communication.
+
+    Observability
+        Prometheus: Monitoring and alerting toolkit.
+        Grafana: Visualization tool for metrics collected by Prometheus.
+        Kiali: Service mesh observability tool for visualizing service interactions.
+
+    Security and Policy Management
+        Kyverno: Kubernetes-native policy engine for enforcing security and compliance policies.
+
+    Notifications
+        Notify Mail: Email notifications for deployment status and alerts.
+
+Detailed CD Pipeline Workflow for UAT
+
+    Trigger Deployment
+        Triggering Event: Deployment is triggered either automatically (e.g., after successful CI) or manually when code is ready for UAT testing.
+        Artifact Retrieval: Fetch the latest Docker image from Harbor or build artifacts from Artifactory.
+
+    Prepare Deployment
+
+        Helm Charts Preparation:
+            Update Helm charts to reflect UAT-specific configurations such as environment variables, feature toggles, and resource limits.
+
+        ArgoCD Configuration:
+            Ensure ArgoCD is configured with the correct Git repository containing Helm charts and Kubernetes manifests for UAT.
+
+    Deploy to UAT Environment
+
+        ArgoCD Deployment:
+            ArgoCD manages the deployment using Helm charts. It synchronizes the state of the UAT environment with the desired state defined in the Git repository.
+
+        Helm Deployment:
+            Helm applies the Helm charts to deploy Docker images to the K3S cluster. This includes creating or updating Kubernetes resources like Deployments, Services, and ConfigMaps.
+
+    Service Mesh Configuration
+        Istio and Envoy Setup:
+            Ensure Istio is correctly configured and deployed in the UAT environment.
+            Deploy and configure Envoy proxies for managing service-to-service communication.
+            Set up Istio configurations such as VirtualServices and DestinationRules to manage traffic routing and policies.
+
+    Security and Policy Enforcement
+        Kyverno Policies:
+            Apply Kyverno policies to enforce security, compliance, and best practices within the UAT environment. This may include policies for resource limits, security context constraints, and network policies.
+
+    Observability Setup
+
+        Prometheus:
+            Configure Prometheus to scrape metrics from applications and Kubernetes components. Set up Prometheus to monitor key metrics such as CPU/memory usage, request rates, and error rates.
+
+        Grafana:
+            Set up Grafana dashboards to visualize metrics collected by Prometheus. Create or update dashboards to monitor application performance, resource utilization, and other relevant metrics.
+
+        Kiali:
+            Integrate Kiali with Istio to visualize the service mesh topology. Use Kiali to monitor service interactions, traffic flows, and service health.
+
+    Post-Deployment Verification
+        Initial Verification:
+            Conduct basic checks to ensure that the application is running as expected. Verify that services are up, configurations are correct, and traffic is being routed appropriately through Istio.
+
+    User Acceptance Testing
+
+        Testing by UAT Team:
+            The UAT team performs manual testing to ensure the application meets user requirements. This includes functional testing, user interface testing, and integration testing.
+
+        Automated Testing (if applicable):
+            Run automated tests if they are part of the UAT process to validate end-to-end functionality and regression.
+
+    Monitoring and Alerts
+
+        Prometheus Alerts:
+            Set up Prometheus Alerts to notify of critical issues, such as high error rates, latency issues, or resource exhaustion. Configure alerting rules based on metrics collected by Prometheus.
+
+        Monitoring with Prometheus and Grafana:
+            Continuously monitor the UAT environment using Grafana dashboards and Prometheus metrics. Investigate any anomalies or performance issues.
+
+    Notifications
+
+    Notify Mail:
+        Send notifications via email to relevant stakeholders about:
+            Deployment status (success/failure).
+            Results from UAT testing.
+            Any issues detected by monitoring or alerts.
+
+    Feedback and Issue Management
+
+    Feedback Collection:
+        Collect feedback from the UAT team regarding the application’s functionality, usability, and any issues encountered.
+
+    Issue Reporting:
+        Document and report any issues or bugs back to the development team for resolution. Use issue tracking systems to manage these issues.
+
+    Rollback (if necessary)
+
+    Rollback Strategy:
+        If significant issues are found, initiate a rollback using ArgoCD or Helm to revert to the previous stable version. Ensure rollback procedures are tested and documented.
+
+    Artifact Management
+
+    Archiving:
+        Archive Docker images and Helm charts in Artifactory for historical reference. Clean up outdated or unused images in Harbor to maintain storage efficiency.
+
+Additional Considerations
+
+    Security: Regularly review and update security policies enforced by Kyverno. Ensure that sensitive data is protected and that access controls are in place.
+
+    Documentation: Keep comprehensive documentation of the deployment process, configurations, and any specific considerations for the UAT environment.
+
+    Backup and Recovery: Implement backup strategies for configurations and data in the UAT environment to ensure recovery in case of failures.
+
+    Capacity Planning: Monitor resource utilization and plan for capacity needs to handle expected load during UAT.

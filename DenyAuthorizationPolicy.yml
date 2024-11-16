@@ -1,0 +1,26 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: denyauthpolicy
+  namespace: default
+spec:
+  action: ALLOW
+  selector:
+    matchLabels:
+      app: httpjwtapi  
+  rules:
+  - from:
+    #- source:
+        #principals: ["cluster.local/ns/default/sa/sleep"]
+    - source:
+        namespaces: ["default"]
+    to:
+    - operation:
+        methods: ["GET"]
+        paths: ["/WeatherForecast"]
+    #- operation:
+        #methods: ["POST"]
+        #paths: ["/data"]
+    #when:
+    #- key: request.auth.claims[iss]
+      #values: ["https://accounts.google.com"]

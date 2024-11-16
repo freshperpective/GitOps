@@ -1,0 +1,61 @@
+Step 1: Update and Install Dependencies
+
+First, ensure your system is up to date and install some necessary dependencies:
+
+bash
+
+sudo apt update
+sudo apt install -y curl
+
+Step 2: Download and Install k3s
+
+You can install k3s using the provided installation script. This script will handle downloading and setting up k3s on your system.
+
+bash
+
+curl -sfL https://get.k3s.io | sh -
+
+This command downloads the installation script using curl and pipes it to sh to execute it. It will automatically install k3s and start the service.
+Step 3: Verify Installation
+
+Once the installation is complete, you can verify that k3s is running by checking the service status:
+
+bash
+
+sudo systemctl status k3s
+
+This command should show the status of the k3s service and confirm whether it is active and running.
+Step 4: Access k3s Cluster
+
+By default, k3s will be configured to run as a single-node cluster. You can interact with the cluster using kubectl, the Kubernetes command-line tool.
+
+To check the nodes in the cluster:
+
+bash
+
+kubectl get nodes
+
+Optional: Managing k3s Service
+
+You can manage the k3s service using systemctl commands. For example:
+
+    To stop the service: sudo systemctl stop k3s
+    To start the service: sudo systemctl start k3s
+    To restart the service: sudo systemctl restart k3s
+
+Step 5: Uninstall k3s (Optional)
+
+If you want to uninstall k3s from your system, you can run the following command:
+
+bash
+
+sudo /usr/local/bin/k3s-uninstall.sh
+
+This script will remove k3s along with its configuration files from your system.
+Notes
+
+    By default, k3s uses sqlite3 as the database backend for storing cluster information.
+    The kubectl configuration file (kubeconfig.yaml) is located at /etc/rancher/k3s/k3s.yaml.
+    Make sure to secure your cluster and configure additional settings as per your requirements.
+
+After completing these steps, you should have a working installation of k3s on your Ubuntu machine.

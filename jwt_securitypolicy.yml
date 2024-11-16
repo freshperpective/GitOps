@@ -1,0 +1,22 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: jwt-example
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: httpapicallertestroute4
+  jwt:
+    providers:
+    - name: weather
+      recomputeRoute: true
+      claimToHeaders:
+        - claim: name
+          header: x-name
+        - claim: given_name
+          header: x_givenname
+      remoteJWKS:
+        #uri: https://raw.githubusercontent.com/envoyproxy/gateway/main/examples/kubernetes/jwt/jwks.json
+        #uri: https://axs.stj.savior.in:8443/auth/realms/demo/protocol/openid-connect/certs
+        uri: https://axs.stj.savior.in:8443/auth/realms/hrms/protocol/openid-connect/certs

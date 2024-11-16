@@ -1,0 +1,120 @@
+CD Pipeline Overview for Production
+
+    Artifact Management
+        Harbor: Container registry for storing Docker images.
+        Artifactory: Repository for additional build artifacts and dependencies.
+
+    Deployment
+        K3S: Lightweight Kubernetes distribution used for production deployment.
+        Helm: Kubernetes package manager for deploying and managing applications.
+        ArgoCD: GitOps tool for managing and automating Kubernetes deployments.
+
+    Service Mesh
+        Istio: Service mesh for managing microservices, including traffic routing, security, and observability.
+        Envoy: Proxy used by Istio for service-to-service communication.
+
+    Observability
+        Prometheus: Monitoring and alerting toolkit.
+        Grafana: Visualization tool for metrics collected by Prometheus.
+        Kiali: Service mesh observability tool that provides insights into service interactions and health.
+
+    Security and Policy Management
+        Kyverno: Kubernetes-native policy engine for enforcing security and compliance policies.
+
+    Notifications
+        Notify Mail: Email notifications for deployment status and alerts.
+
+Detailed CD Pipeline Workflow for Production
+
+    Trigger Deployment
+        Triggering Event: Deployments are typically triggered after successful staging or UAT, or manually for production releases.
+        Artifact Retrieval: Pull the latest Docker image from Harbor or fetch build artifacts from Artifactory.
+
+    Prepare Deployment
+
+        Helm Charts Preparation:
+            Update Helm charts to include production-specific configurations, such as environment variables, resource limits, and feature toggles appropriate for production.
+
+        ArgoCD Configuration:
+            Ensure ArgoCD is configured with the Git repository containing Helm charts and Kubernetes manifests for production.
+
+    Deploy to Production Environment
+
+        ArgoCD Deployment:
+            ArgoCD manages the deployment to the production environment. It synchronizes the state of the production cluster with the desired state defined in the Git repository.
+            ArgoCD monitors deployment status and ensures the application is deployed as expected.
+
+        Helm Deployment:
+            Helm applies the Helm charts to deploy the Docker images to the K3S cluster, creating or updating Kubernetes resources.
+
+    Service Mesh Configuration
+        Istio and Envoy Setup:
+            Ensure Istio is deployed and correctly configured in the production environment.
+            Deploy and configure Envoy proxies to handle service-to-service communication and manage traffic routing.
+            Define Istio configurations such as VirtualServices and DestinationRules to control traffic flow and policies in production.
+
+    Security and Policy Enforcement
+        Kyverno Policies:
+            Apply Kyverno policies to enforce security and compliance requirements in the production environment. This includes policies for resource limits, security contexts, and network security.
+
+    Observability Setup
+
+        Prometheus:
+            Configure Prometheus to scrape metrics from the production applications and Kubernetes components. Ensure it is set up to monitor critical metrics such as resource utilization, application performance, and error rates.
+
+        Grafana:
+            Set up Grafana dashboards to visualize metrics collected by Prometheus. Create dashboards to monitor production health, performance metrics, and system alerts.
+
+        Kiali:
+            Integrate Kiali with Istio to visualize the service mesh topology. Use Kiali to monitor service interactions, traffic patterns, and to troubleshoot service issues.
+
+    Post-Deployment Verification
+
+        Initial Verification:
+            Perform initial checks to ensure that the deployment is successful. Verify that services are up, pods are running as expected, and traffic is routing correctly through Istio.
+
+        Canary Releases (if applicable):
+            If using a canary release strategy, deploy the new version to a subset of production traffic first. Monitor the canary deployment for issues before rolling out the changes to the entire production environment.
+
+    Monitoring and Alerts
+
+        Prometheus Alerts:
+            Set up Prometheus Alerts to notify of critical issues such as high error rates, resource exhaustion, or performance degradation. Configure alerting rules based on key metrics.
+
+        Monitoring with Prometheus and Grafana:
+            Continuously monitor the production environment using Grafana dashboards and Prometheus metrics. Analyze performance, track anomalies, and respond to alerts.
+
+    Notifications
+        Notify Mail:
+            Send notifications to relevant stakeholders about the deployment status, including:
+                Success or failure of the deployment.
+                Results from post-deployment verification.
+                Alerts and notifications from Prometheus.
+
+    Feedback and Issue Management
+
+        Feedback Collection:
+            Collect feedback from stakeholders regarding the deployment and application performance. Document any issues or areas for improvement.
+
+        Issue Reporting:
+            Report any issues or bugs discovered during or after deployment to the development team. Use issue tracking tools to manage and prioritize these issues.
+
+    Rollback (if necessary)
+        Rollback Strategy:
+            If critical issues are detected, initiate a rollback using ArgoCD or Helm to revert to a previous stable version. Ensure that rollback procedures are well-documented and tested.
+
+    Artifact Management
+        Archiving:
+            Archive Docker images and Helm charts in Artifactory for historical reference. Clean up outdated or unused images from Harbor to optimize storage.
+
+Additional Considerations
+
+    High Availability: Ensure that the production environment is configured for high availability, including load balancing and redundancy.
+
+    Disaster Recovery: Implement disaster recovery strategies to handle potential failures or outages in the production environment.
+
+    Compliance: Regularly review and update security policies enforced by Kyverno to ensure ongoing compliance with industry standards and regulations.
+
+    Documentation: Maintain up-to-date documentation on deployment processes, configurations, and operational procedures.
+
+    Capacity Planning: Monitor resource utilization and plan for scaling to accommodate production workloads and traffic.
